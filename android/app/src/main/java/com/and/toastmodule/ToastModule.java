@@ -5,10 +5,15 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
@@ -16,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.and.MainActivity;
+import com.and.toastmodule.Services.NoBindingService;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -253,13 +259,19 @@ public class ToastModule extends ReactContextBaseJavaModule{
         mNotifyManager = (NotificationManager) getReactApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getReactApplicationContext());
 
+        Bitmap largeIcon = BitmapFactory.decodeResource(getReactApplicationContext().getResources(), R.drawable.porquinlogo);
+
         mBuilder.setTicker("React Native Notification")
-                .setSmallIcon(android.R.drawable.btn_star)
+                .setSmallIcon(android.R.color.transparent)
+                .setLargeIcon(largeIcon)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setSound(soundURI)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(mVibratePattern);
+                .setVibrate(mVibratePattern)
+                .setColor(getReactApplicationContext().getResources().getColor(android.R.color.transparent));
+
+
 
         mBuilder.addAction(android.R.drawable.stat_sys_upload, action1, pendInt1)
                 .addAction(android.R.drawable.stat_sys_download, action2, pendInt2);
@@ -308,5 +320,107 @@ public class ToastModule extends ReactContextBaseJavaModule{
         }catch (Exception e){
             Toast.makeText(getReactApplicationContext(), "Callback not works...", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @ReactMethod
+    public void alertDialog(){
+
+        // Instanciando um AlertDialog.Builder com seu construtor.
+        AlertDialog.Builder builder = new AlertDialog.Builder(getCurrentActivity());
+
+        // Escolhendo alguns sets para formar o alert dialog.
+        //builder.setMessage("Construindo AlertDialog!!"); // Parece que não aparece se for utilizado também o .setItems.
+        builder.setTitle("Alert Show");
+
+        // Adicionando botões.
+        builder.setPositiveButton("Show", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(getReactApplicationContext(), "Clicou show!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Criando uma lista de escolha única.
+        builder.setItems(R.array.colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getReactApplicationContext(), "Item " + which, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Fui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(getReactApplicationContext(), "Clicou fui!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Obtendo o AlertDialog a partir do create().
+        AlertDialog dialog = builder.create();
+
+        // Desabilitando a opção de fechar o alert dialog ao clicar fora da caixa.
+        dialog.setCancelable(false);
+
+        // Mostrar o alert dialog.
+        dialog.show();
+
+    }
+
+    // Player para o método seguinte.
+    MediaPlayer mediaPlayer;
+
+    @ReactMethod
+    public void player(String command){
+
+
+        if(mediaPlayer == null){
+            mediaPlayer = MediaPlayer.create(getReactApplicationContext(), R.raw.moonlightsonata);
+        }
+
+
+        switch (command){
+
+            case "play":    if(mediaPlayer != null){
+                                mediaPlayer.start();
+                            }
+                            break;
+
+            case "pause":   if(mediaPlayer != null){
+                                mediaPlayer.pause();
+                            }
+                                break;
+
+            case "stop": if(mediaPlayer != null){
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                         }
+                         break;
+
+            default: mToast("Comando não conhecido: " + command);
+
+        }
+
+    }
+
+    @ReactMethod
+    public void serviceNoBind(String command){
+
+        Intent serviceIntent = new Intent(getReactApplicationContext(), NoBindingService.class);
+
+        if(command.equals("start")){
+            getCurrentActivity().startService(serviceIntent);
+        }else if(command.equals("stop")){
+            getCurrentActivity().stopService(serviceIntent);
+        }else {
+            mToast("Comando desconhecido: " + command);
+        }
+
+    }
+
+    public void mToast(String msg){
+
+        Toast.makeText(getReactApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

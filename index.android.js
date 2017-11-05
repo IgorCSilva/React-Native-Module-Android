@@ -118,6 +118,31 @@ export default class and extends Component {
 
     ModuleAndroid.callback((msg) => this.customNotification(33, "Callback", msg));
   }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  alertDialog(){
+
+    ModuleAndroid.alertDialog();
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  player(command){
+
+    ModuleAndroid.player(command);
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  serviceNoBind(command){
+    //alert(command);
+
+    ModuleAndroid.serviceNoBind(command);
+  }
 
 
 
@@ -128,8 +153,9 @@ export default class and extends Component {
       return(
         <TouchableOpacity
           key={data.text}
-          style={{margin: 5, padding: 5, alignItems: 'center', backgroundColor: "#841584", borderRadius: 10}}
+          style={{margin: 5, padding: 5, alignItems: 'center', backgroundColor: "#841584", borderRadius: 10, elevation: 5, borderColor: "#00000066", borderWidth: 2}}
           onPress={data.func}
+          
         >
           <Text style={{color: 'white', fontSize: 20}}> {data.text} </Text>
 
@@ -150,12 +176,14 @@ export default class and extends Component {
 
   newBlock(title, buttons){
     return(
-      <View style={{width: '100%',}}>
+      <View style={{width: '100%', marginTop: 10}}>
           <Text style={{alignSelf: 'center', fontSize: 20, marginVertical: 5, borderBottomWidth: 1}}>
             {title}
           </Text>
 
           {this.buttons(buttons)}
+
+          <View style={{width: '100%', borderWidth: 1, borderColor: '#3355bb88', marginBottom: 10, marginTop: 10, elevation: 2}} />
 
           {/*
           
@@ -227,7 +255,7 @@ export default class and extends Component {
             },
             {
               text: "Notificação Personalizada",
-              func: () => this.customNotification(13, "Module Android", "React Native")   
+              func: () => this.customNotification(13, "Module Android", "React Native açsldkfj açsldkfj açsldkfj açsldkfj")   
             },
             {
               text: "Notificação Com Ações",
@@ -241,13 +269,59 @@ export default class and extends Component {
           )}
 
 
-
+          {/**/}
           {this.newBlock(
           "Callbacks",
           [
             {
               text: "Callback",
               func: () => this.callback()   
+            },
+          ]
+          )}
+          
+          {/**/}
+          {this.newBlock(
+          "AlertDialog",
+          [
+            {
+              text: "AlertDialog",
+              func: () => this.alertDialog()   
+            },
+          ]
+          )}
+
+
+          {/**/}
+          {this.newBlock(
+          "Player",
+          [
+            {
+              text: "Play",
+              func: () => this.player("play")   
+            },
+            {
+              text: "Pause",
+              func: () => this.player("pause")   
+            },
+            {
+              text: "Stop",
+              func: () => this.player("stop")   
+            },
+          ]
+          )}
+
+          {/**/}
+          {this.newBlock(
+          "Service - Player No Bind",
+          [
+            {
+              text: "startService",
+              func: () => this.serviceNoBind("start")   
+            },
+            {
+              text: "stopService",
+              func: () => this.serviceNoBind("stop")   
             },
           ]
           )}

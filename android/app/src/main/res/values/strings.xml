@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">and</string>
+
+    <string-array name="colors">
+        <item>azul</item>
+        <item>bromotimol</item>
+        <item>metila</item>
+    </string-array>
 </resources>

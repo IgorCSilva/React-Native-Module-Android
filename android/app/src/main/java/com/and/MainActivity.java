@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
+
+import com.and.toastmodule.ToastModule;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -18,6 +20,8 @@ public class MainActivity extends ReactActivity {
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.
      */
+
+
     @Override
     protected String getMainComponentName() {
         return "and";
@@ -64,6 +68,7 @@ public class MainActivity extends ReactActivity {
 
 
     }
+
     @Override
     public void onPause(){
         super.onPause();
@@ -86,5 +91,6 @@ public class MainActivity extends ReactActivity {
 
         Toast.makeText(this, "onDestroy - MainActivity", Toast.LENGTH_SHORT).show();
     }
+
 
 }

@@ -4,15 +4,20 @@ package com.and.toastmodule;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
@@ -21,7 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.and.MainActivity;
+import com.and.toastmodule.Services.BindService;
+import com.and.toastmodule.Services.DownloadService;
 import com.and.toastmodule.Services.NoBindingService;
+import com.facebook.imagepipeline.common.Priority;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -182,8 +190,10 @@ public class ToastModule extends ReactContextBaseJavaModule{
         getReactApplicationContext().sendBroadcast(new Intent(broadcast));
     }
 
+
+
     @ReactMethod
-    public void simpleNotification(int id, String title, String text){
+    public void simpleNotification( int id, String title, String text){
 
         // Definindo som ao ser executado e padrão de vibração.
         Uri soundURI = Uri.parse("android.resource://"+ MainActivity.PACKAGE_NAME+"/" + R.raw.alarm_rooster);
@@ -269,7 +279,7 @@ public class ToastModule extends ReactContextBaseJavaModule{
                 .setSound(soundURI)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(mVibratePattern)
-                .setColor(getReactApplicationContext().getResources().getColor(android.R.color.transparent));
+                .setColor(getReactApplicationContext().getResources().getColor(R.color.transparente));
 
 
 
@@ -277,6 +287,111 @@ public class ToastModule extends ReactContextBaseJavaModule{
                 .addAction(android.R.drawable.stat_sys_download, action2, pendInt2);
 
         mNotifyManager.notify(id, mBuilder.build());
+
+    }
+
+
+    @ReactMethod
+    public void inboxNotification(int id, String title, String summary){
+
+        // Instancia de NotificationCompat.Builder.
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getReactApplicationContext());
+
+        // Aplicando estilo.
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
+
+
+        // Adicionando as linhas.
+        int i;
+        /*
+        for(i = 0; i < texts.length; i++){
+            style.addLine(texts[i]);
+        }*/
+
+        style.addLine("Linha 1");
+        style.addLine("Linha 2");
+        style.addLine("Linha 3");
+        style.addLine("Linha 4");
+
+        // Adicionando título.
+        style.setBigContentTitle(title);
+
+        // Acrescentando sumário.
+        style.setSummaryText(summary);
+
+        // Construindo a notificação.
+        Notification notification = builder.setContentTitle("Title")
+                .setContentText("This is a notification")
+                .setSmallIcon(R.drawable.fire_eye_alien)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .build();
+
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getReactApplicationContext());
+        notificationManagerCompat.notify(id, notification);
+
+    }
+
+    @ReactMethod
+    public void bigTextNotification(int id, String title, String bigText, String summary){
+
+        // Instancia de NotificationCompat.Builder.
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getReactApplicationContext());
+
+        // Aplicando estilo.
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
+
+        // Adicionando texto grande.
+        style.bigText(bigText);
+
+        // Adicionando título.
+        style.setBigContentTitle(title);
+
+        // Acrescentando sumário.
+        style.setSummaryText(summary);
+
+        // Construindo a notificação.
+        Notification notification = builder.setContentTitle("Title")
+                .setContentText("This is a notification")
+                .setSmallIcon(android.R.drawable.ic_notification_overlay)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .build();
+
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getReactApplicationContext());
+        notificationManagerCompat.notify(id, notification);
+
+    }
+
+    @ReactMethod
+    public void bigPictureNotification(int id, String title, String summary){
+
+        // Instancia de NotificationCompat.Builder.
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getReactApplicationContext());
+
+        // Aplicando estilo.
+        NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle(builder);
+
+        // Adicionando imagem.
+        final Bitmap picture = BitmapFactory.decodeResource(getReactApplicationContext().getResources(), R.drawable.praia_xareu);
+        style.bigPicture(picture);
+
+        // Adicionando título.
+        style.setBigContentTitle(title);
+
+        // Acrescentando sumário.
+        style.setSummaryText(summary);
+
+        // Construindo a notificação.
+        Notification notification = builder.setContentTitle("Title")
+                .setContentText("This is a notification")
+                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .build();
+
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getReactApplicationContext());
+        notificationManagerCompat.notify(id, notification);
 
     }
 
@@ -417,6 +532,75 @@ public class ToastModule extends ReactContextBaseJavaModule{
             mToast("Comando desconhecido: " + command);
         }
 
+    }
+
+
+    BindService bindService;
+    boolean isBound = false;
+
+    ServiceConnection sConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mToast("Binding com service!");
+            bindService = ((BindService.MusicBinder) service).getService();
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mToast("Desconectou bound service!");
+            bindService = null;
+            isBound = false;
+        }
+    };
+
+    @ReactMethod
+    public void serviceWithBind(String command){
+
+
+        if(command.equals("start")){
+
+            if(isBound){
+                bindService.playMusic();
+            }else {
+                mToast("Service ainda não fez binding...");
+            }
+        }else if(command.equals("pause")){
+            if(isBound){
+                bindService.pauseMusic();
+            }else {
+                mToast("Service ainda não fez binding...");
+            }
+        }else if(command.equals("bind")){
+
+
+            Intent serviceIntent = new Intent(getReactApplicationContext(), BindService.class);
+            getCurrentActivity().startService(serviceIntent);
+
+            if(!isBound){
+                mToast("Binding...");
+                Intent bindIntent = new Intent(getReactApplicationContext(), BindService.class);
+                isBound = getCurrentActivity().bindService(bindIntent, sConn, getReactApplicationContext().BIND_AUTO_CREATE);
+            }
+        }else if(command.equals("unbinding")){
+
+            if(isBound) {
+                mToast("Unbinding...");
+                getCurrentActivity().unbindService(sConn);
+                isBound = false;
+            }
+        }
+
+
+    }
+
+    @ReactMethod
+    public void serviceDownload(String command){
+
+        if(command.equals("download")){
+
+            Intent downloadService = new Intent(getReactApplicationContext(), DownloadService.class);
+        }
     }
 
     public void mToast(String msg){

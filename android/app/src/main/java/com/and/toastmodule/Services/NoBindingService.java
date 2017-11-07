@@ -51,10 +51,7 @@ public class NoBindingService extends Service {
 
         Toast.makeText(getApplicationContext(),"onCreate() - Service", Toast.LENGTH_SHORT).show();
     }
-    @ReactMethod
-    public void show(){
-        customNotification()
-    }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

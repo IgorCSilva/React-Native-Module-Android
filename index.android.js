@@ -106,6 +106,30 @@ export default class and extends Component {
   /**
    * Exibe o browser na página do site escolhido.
    */
+  inboxNotification(id, title, texts, summary){
+
+    ModuleAndroid.inboxNotification(id, title, summary);
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  bigTextNotification(id, title, bigText, summary){
+
+    ModuleAndroid.bigTextNotification(id, title, bigText, summary);
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  bigPictureNotification(id, title, summary){
+
+    ModuleAndroid.bigPictureNotification(id, title, summary);
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
   settingsNotification(id, title){
 
     ModuleAndroid.settingsNotification(id, title);
@@ -142,6 +166,16 @@ export default class and extends Component {
     //alert(command);
 
     ModuleAndroid.serviceNoBind(command);
+  }
+
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  serviceWithBind(command){
+    //alert(command);
+
+    ModuleAndroid.serviceWithBind(command);
   }
 
 
@@ -194,6 +228,13 @@ export default class and extends Component {
   }
 
   render() {
+
+    var texts = new Array();
+    texts[0] = "Text 1";
+    texts[1] = "Text 2";
+    texts[2] = "Text 3";
+    texts[3] = "Text 4";
+    texts[4] = "Text 5";
 
     return (
       <View style={styles.container}>
@@ -262,6 +303,18 @@ export default class and extends Component {
               func: () => this.actionNotification(7, "Module Android", "React Native", "Ação 1", "Ação 2")   
             },
             {
+              text: "Notificação Inbox",
+              func: () => this.inboxNotification(17, "Inbox Notification", texts, "Sumário da notificação")   
+            },
+            {
+              text: "Notificação - Texto Grande",
+              func: () => this.bigTextNotification(11, "Big Text Notification", "Escrever um texto grande para que fique com duas linhas ou mais na notificação.", "Sumário da notificação")   
+            },
+            {
+              text: "Notificação - Imagem Grande",
+              func: () => this.bigPictureNotification(9, "Big Image Notification", "Sumário da notificação")   
+            },
+            {
               text: "Notificação Settings",
               func: () => this.settingsNotification(123, "Module Android")   
             },
@@ -322,6 +375,29 @@ export default class and extends Component {
             {
               text: "stopService",
               func: () => this.serviceNoBind("stop")   
+            },
+          ]
+          )}
+
+          {/**/}
+          {this.newBlock(
+          "Service - Player With Bind",
+          [
+            {
+              text: "Binding",
+              func: () => this.serviceWithBind("bind")   
+            },
+            {
+              text: "Unbinding",
+              func: () => this.serviceWithBind("unbinding")   
+            },
+            {
+              text: "Play",
+              func: () => this.serviceWithBind("start")   
+            },
+            {
+              text: "Pause",
+              func: () => this.serviceWithBind("pause")   
             },
           ]
           )}

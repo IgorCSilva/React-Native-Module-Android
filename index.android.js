@@ -177,6 +177,15 @@ export default class and extends Component {
 
     ModuleAndroid.serviceWithBind(command);
   }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  serviceDownload(command, link){
+    //alert(command);
+
+    ModuleAndroid.serviceDownload(command, link);
+  }
 
 
 
@@ -401,6 +410,25 @@ export default class and extends Component {
             },
           ]
           )}
+
+          
+
+          {/**/}
+          {this.newBlock(
+          "Service - Download",
+          [
+            {
+              text: "Download",
+              func: () => this.serviceDownload("download", "https://i.pinimg.com/originals/34/fb/df/34fbdf18c97b00e0ad88df836b3566d9.jpg")   
+            },
+            {
+              text: "Visializar",
+              func: () => this.serviceDownload("visualizar", "https://i.pinimg.com/originals/34/fb/df/34fbdf18c97b00e0ad88df836b3566d9.jpg")   
+            },
+          ]
+          )}
+
+
         </ScrollView>
       </View>
     );

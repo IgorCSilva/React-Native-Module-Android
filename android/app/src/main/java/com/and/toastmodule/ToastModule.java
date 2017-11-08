@@ -595,11 +595,22 @@ public class ToastModule extends ReactContextBaseJavaModule{
     }
 
     @ReactMethod
-    public void serviceDownload(String command){
+    public void serviceDownload(String command, final String downloadLink){
+
 
         if(command.equals("download")){
 
+
             Intent downloadService = new Intent(getReactApplicationContext(), DownloadService.class);
+            downloadService.setData(Uri.parse(downloadLink.toString()));
+            getCurrentActivity().startService(downloadService);
+
+        }else if(command.equals("visualizar")) {
+            Intent viewFile = new Intent(getReactApplicationContext(), DownloadViewActivity.class).putExtra("link", downloadLink.toString());
+            getCurrentActivity().startActivity(viewFile);
+
+        }else {
+            mToast("Comando não reconhecido");
         }
     }
 

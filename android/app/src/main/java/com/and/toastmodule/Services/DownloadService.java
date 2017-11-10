@@ -48,9 +48,9 @@ public class DownloadService extends IntentService {
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             FileOutputStream fos = new FileOutputStream(output.getPath());
             BufferedOutputStream out = new BufferedOutputStream(fos);
-            
+
             try {
-                Toast.makeText(getApplicationContext(), "Baixando...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Baixando...", Toast.LENGTH_SHORT).show();
 
                 InputStream in = c.getInputStream();
                 byte[] buffer = new byte[8192];

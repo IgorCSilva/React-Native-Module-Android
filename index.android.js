@@ -186,6 +186,15 @@ export default class and extends Component {
 
     ModuleAndroid.serviceDownload(command, link);
   }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  memoriaExterna(command){
+    //alert(command);
+
+    ModuleAndroid.memoriaExterna(command);
+  }
 
 
 
@@ -424,6 +433,26 @@ export default class and extends Component {
             {
               text: "Visializar",
               func: () => this.serviceDownload("visualizar", "https://i.pinimg.com/originals/34/fb/df/34fbdf18c97b00e0ad88df836b3566d9.jpg")   
+            },
+          ]
+          )}
+          
+
+          {/**/}
+          {this.newBlock(
+          "Memória Externa",
+          [
+            {
+              text: "Copiar",
+              func: () => this.memoriaExterna("copiar")   
+            },
+            {
+              text: "Visializar",
+              func: () => this.memoriaExterna("ler")                 
+            },
+            {
+              text: "Apagar",
+              func: () => this.memoriaExterna("apagar")                 
             },
           ]
           )}

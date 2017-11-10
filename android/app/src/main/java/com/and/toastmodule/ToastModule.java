@@ -1,6 +1,7 @@
 
 package com.and.toastmodule;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,17 +10,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -37,7 +43,14 @@ import com.facebook.react.bridge.ReactMethod;
 
 import com.and.R;
 
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 public class ToastModule extends ReactContextBaseJavaModule{
@@ -614,6 +627,124 @@ public class ToastModule extends ReactContextBaseJavaModule{
         }
     }
 
+
+    public boolean podeEscrever() {
+        return ContextCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /* Checa se memoria externa esta disponivel para leitura e escrita */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checa se memoria externa esta disponivel pelo menos para leitura */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    private void copiarImagemNaMemoria(File f) {
+        try {
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(f));
+            BufferedInputStream is = new BufferedInputStream(getCurrentActivity().getResources().openRawResource(R.raw.sport));
+            copiar(is, os);
+        } catch (FileNotFoundException e) {
+            Log.e("COPIA", "FileNotFoundException " + e.getMessage());
+        }
+    }
+
+    private void copiar(InputStream is, OutputStream os) {
+        final byte[] buf = new byte[1024];
+        int numBytes;
+        try {
+            while (-1 != (numBytes = is.read(buf))) {
+                os.write(buf, 0, numBytes);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+                os.close();
+            } catch (IOException e) {
+                Log.e("COPIANDO", "IOException "+e.getMessage());
+
+            }
+        }
+    }
+
+    @ReactMethod
+    public void memoriaExterna(String command){
+
+        final String arquivo = "melhorDoNordeste.jpg";
+
+        String[] STORAGE_PERMISSIONS = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        final int WRITE_EXTERNAL_STORAGE_REQUEST = 710;
+
+
+        if(podeEscrever()){
+
+            if(command.equals("copiar")){
+
+                if(isExternalStorageWritable()){
+                    File f = new File(getCurrentActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), arquivo);
+                    if (!f.exists()) {
+                        copiarImagemNaMemoria(f);
+                        Toast.makeText(getReactApplicationContext(), "Copiando...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getReactApplicationContext(), "Arquivo já existe...", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getReactApplicationContext(),"Memória externa não disponivel!",Toast.LENGTH_SHORT).show();
+                }
+
+            }else if(command.equals("ler")){
+
+                if (isExternalStorageReadable()) {
+                    Intent intent = new Intent(getReactApplicationContext(), ViewImage.class).putExtra("arquivo", arquivo);
+                    getCurrentActivity().startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getReactApplicationContext(),"Memória externa nao disponivel!",Toast.LENGTH_SHORT).show();
+                }
+
+            }else if(command.equals("apagar")){
+                if (isExternalStorageWritable()) {
+                    File f = new File(getCurrentActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),arquivo);
+                    if (f.exists()) {
+                        f.delete();
+                        Toast.makeText(getReactApplicationContext(),"Apagando...",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getReactApplicationContext(),"Arquivo inexistente!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getReactApplicationContext(),"Memória externa nao disponivel!", Toast.LENGTH_SHORT).show();
+                }
+            }else {
+                mToast("Comando não reconhecido: " + command);
+            }
+
+        }else {
+
+            mToast("Permissão para se trabalhar com a memória externa negada");
+        }
+
+    }
+
+    // Método utilizado para facilitar a exibição de toasts.
     public void mToast(String msg){
 
         Toast.makeText(getReactApplicationContext(), msg, Toast.LENGTH_SHORT).show();

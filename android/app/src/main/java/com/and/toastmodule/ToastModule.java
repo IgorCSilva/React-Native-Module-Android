@@ -2,6 +2,7 @@
 package com.and.toastmodule;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -65,17 +66,22 @@ public class ToastModule extends ReactContextBaseJavaModule{
         return "ToastModule";
     }
 
+
+
+
     @ReactMethod
     public void callBack(Callback callback) {
 
         callback.invoke("Callback works!");
     }
 
+    Context context = getReactApplicationContext();
+
     @ReactMethod
-    public void showToastSimples(final String msg){
+    public final void showToastSimples(final String msg){
 
         // Exibe toast com a mensagem enviada pelo código JS.
-        Toast.makeText(getReactApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -302,6 +308,7 @@ public class ToastModule extends ReactContextBaseJavaModule{
         mNotifyManager.notify(id, mBuilder.build());
 
     }
+
 
 
     @ReactMethod

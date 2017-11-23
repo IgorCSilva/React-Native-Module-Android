@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.and.R;
-import com.and.toastmodule.ToastModule;
-import com.facebook.react.bridge.ReactMethod;
 
 /**
  * Created by Administrador on 04/11/2017.

@@ -1,4 +1,4 @@
-package com.and.toastmodule;
+package com.and.moduleandroid;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

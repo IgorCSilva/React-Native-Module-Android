@@ -285,7 +285,7 @@ export default class and extends Component {
             },
             {
               text: "Chamada",
-              func: () => this.intentCall("tel:995213474")   
+              func: () => this.intentCall("tel:81995213474")   
             },
             {
               text: "Música",

@@ -2,7 +2,6 @@
 package com.and.toastmodule;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -25,18 +23,19 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.and.MainActivity;
+import com.and.toastmodule.Intents.IntentCall;
+import com.and.toastmodule.Intents.IntentView;
+import com.and.toastmodule.Notifications.SimpleNotification;
 import com.and.toastmodule.Services.BindService;
 import com.and.toastmodule.Services.DownloadService;
 import com.and.toastmodule.Services.NoBindingService;
-import com.facebook.imagepipeline.common.Priority;
+import com.and.toastmodule.Toasts.ToastPersonalizado;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -75,20 +74,19 @@ public class ToastModule extends ReactContextBaseJavaModule{
         callback.invoke("Callback works!");
     }
 
-    Context context = getReactApplicationContext();
 
     @ReactMethod
-    public final void showToastSimples(final String msg){
+    public void showToastSimples(final String msg){
 
         // Exibe toast com a mensagem enviada pelo código JS.
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getReactApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 
     @ReactMethod
     public void showToastPersonalizado(String msg){
 
-        // Instanciando elemento Toast.
+   /*     // Instanciando elemento Toast.
         Toast toast = new Toast(getReactApplicationContext());
 
         // Setando a posição vertical do toast. Os dois números seguintes correspondem
@@ -97,7 +95,9 @@ public class ToastModule extends ReactContextBaseJavaModule{
 
         // Definindo duração de exibição do toast.
         toast.setDuration(Toast.LENGTH_LONG);
-
+*/
+        ToastPersonalizado toast = new ToastPersonalizado(msg);
+        toast.createToast(getReactApplicationContext());
 
         // Pegando layout e atribuindo a uma variável para que se possa manipular seus componentes.
         RelativeLayout rl = (RelativeLayout) getCurrentActivity().getLayoutInflater().inflate(R.layout.custom_toast, null);
@@ -112,7 +112,7 @@ public class ToastModule extends ReactContextBaseJavaModule{
         TextView tv = (TextView) rl.findViewById(R.id.toast_personalizado);
 
         // Setando texto com a mensagem enviada pelo código JS.
-        tv.setText(msg);
+        tv.setText(toast.getMsg());
 
         // Atribuindo ao toast a view manipulada acima.
         toast.setView(rl);
@@ -124,61 +124,28 @@ public class ToastModule extends ReactContextBaseJavaModule{
     @ReactMethod
     public void intentSite (String site){
 
-        // Criando intent para avisar ao sistema do que fazer.
-        Intent intent = new Intent();
+        IntentView intentView = new IntentView(site);
 
-        // A ação será exibir uma view.
-        intent.setAction(Intent.ACTION_VIEW);
-
-        // Como não se está em um contexto de uma activity é necessário
-        // colocar esta flag.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Passando o site a ser aberto para a intent.
-        intent.setData(Uri.parse(site));
-
-        // Inicializando a activity com a ação definica na intent.
-        getReactApplicationContext().startActivity(intent);
+        intentView.createIntent();
+        intentView.startIntent(getReactApplicationContext());
     }
 
     @ReactMethod
     public void intentGeolocation (String local){
 
-        // Criando intent para avisar ao sistema do que fazer.
-        Intent intent = new Intent();
+        IntentView intentView = new IntentView(local);
 
-        // A ação será exibir uma view.
-        intent.setAction(Intent.ACTION_VIEW);
-
-        // Como não se está em um contexto de uma activity é necessário
-        // colocar esta flag.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Passando o local a ser aberto para a intent.
-        intent.setData(Uri.parse(local));
-
-        // Inicializando a activity com a ação definica na intent.
-        getReactApplicationContext().startActivity(intent);
+        intentView.createIntent();
+        intentView.startIntent(getReactApplicationContext());
     }
 
     @ReactMethod
     public void intentCall (String number){
 
-        // Criando intent para avisar ao sistema do que fazer.
-        Intent intent = new Intent();
+        IntentCall call = new IntentCall(number);
 
-        // A ação será exibir uma view.
-        intent.setAction(Intent.ACTION_DIAL);
-
-        // Como não se está em um contexto de uma activity é necessário
-        // colocar esta flag.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // Passando o número a ser chamado para a intent.
-        intent.setData(Uri.parse(number));
-
-        // Inicializando a activity com a ação definica na intent.
-        getReactApplicationContext().startActivity(intent);
+        call.createIntent();
+        call.startIntent(getReactApplicationContext());
     }
 
 
@@ -214,27 +181,13 @@ public class ToastModule extends ReactContextBaseJavaModule{
     @ReactMethod
     public void simpleNotification( int id, String title, String text){
 
-        // Definindo som ao ser executado e padrão de vibração.
-        Uri soundURI = Uri.parse("android.resource://"+ MainActivity.PACKAGE_NAME+"/" + R.raw.alarm_rooster);
+        // Definindo do padrão de vibração.
         long[] mVibratePattern = { 0, 200, 200, 300 };
 
+        SimpleNotification notification = new SimpleNotification(mVibratePattern, id, title, text);
 
-        NotificationManager mNotifyManager;
-        mNotifyManager = (NotificationManager) getReactApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getReactApplicationContext());
-
-        mBuilder.setTicker("React Native Notification")
-                .setSmallIcon(android.R.drawable.btn_star)
-                .setAutoCancel(false)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setSound(soundURI)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setVibrate(mVibratePattern);
-
-        mNotifyManager.notify(id, mBuilder.build());
-
-
+        notification.createNotification(getReactApplicationContext());
+        notification.showNotification();
     }
 
     @ReactMethod

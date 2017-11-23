@@ -1,19 +1,16 @@
 package com.and;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.View;
 import android.widget.Toast;
 
 
 import com.and.toastmodule.DownloadViewActivity;
 import com.and.toastmodule.Services.DownloadService;
-import com.and.toastmodule.ToastModule;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {

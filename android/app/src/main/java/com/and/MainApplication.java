@@ -1,14 +1,11 @@
 package com.and;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 

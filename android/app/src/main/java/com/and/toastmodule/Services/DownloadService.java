@@ -3,12 +3,8 @@ package com.and.toastmodule.Services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.and.toastmodule.ToastModule;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

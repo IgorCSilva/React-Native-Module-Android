@@ -31,10 +31,10 @@
         </intent-filter>
       </activity>
 
-       <activity android:name=".moduleandroid.DownloadViewActivity" />
+       <activity android:name=".toastmodule.DownloadViewActivity" />
 
         <receiver
-            android:name=".moduleandroid.ReactReceiver"
+            android:name=".toastmodule.ReactReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -46,22 +46,22 @@
         </receiver>
 
         <service
-            android:name=".moduleandroid.Services.NoBindingService"
+            android:name=".toastmodule.Services.NoBindingService"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".moduleandroid.Services.BindService"
+            android:name=".toastmodule.Services.BindService"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".moduleandroid.Services.DownloadService"
+            android:name=".toastmodule.Services.DownloadService"
             android:enabled="true"
             android:exported="true" />
 
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-        <activity android:name=".moduleandroid.ViewImage" />
+        <activity android:name=".toastmodule.ViewImage" />
 
     </application>
 

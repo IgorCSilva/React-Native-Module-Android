@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.and.MainActivity;
+import com.and.toastmodule.DataBase.DataBaseHelper;
 import com.and.toastmodule.Intents.IntentCall;
 import com.and.toastmodule.Intents.IntentView;
 import com.and.toastmodule.Notifications.SimpleNotification;
@@ -702,6 +704,42 @@ public class ToastModule extends ReactContextBaseJavaModule{
             mToast("Permissão para se trabalhar com a memória externa negada");
         }
 
+    }
+
+    @ReactMethod
+    public void sqlDatabase(String command, String id, String name, String surname, String marks){
+        DataBaseHelper myDb = new DataBaseHelper(getReactApplicationContext());
+
+        if(command.equals("insert")){
+            boolean insert = myDb.insertData(name, surname, marks);
+
+            if (insert) {
+                mToast("Inserido com sucesso!");
+            }else {
+                mToast("Problema ao inserir...");
+            }
+
+        }else if(command.equals("read")){
+            Cursor res = myDb.getAllData();
+
+            String dataBaseInfo = "";
+
+            while(res.moveToNext()){
+                dataBaseInfo = dataBaseInfo + res.getString(0) + ": " + res.getString(1) + "\n";
+            }
+
+            mToast(dataBaseInfo);
+        }else if(command.equals("update")){
+
+            myDb.updateData(id, name, surname, marks);
+
+            mToast("Dado atualizado.");
+        }else if(command.equals("delete")){
+
+            myDb.deleteData(id);
+
+            mToast("Dado deletado.");
+        }
     }
 
     // Método utilizado para facilitar a exibição de toasts.

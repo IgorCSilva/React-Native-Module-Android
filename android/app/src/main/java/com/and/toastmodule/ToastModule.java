@@ -34,6 +34,8 @@ import com.and.toastmodule.DataBase.DataBaseHelper;
 import com.and.toastmodule.Intents.IntentCall;
 import com.and.toastmodule.Intents.IntentView;
 import com.and.toastmodule.Notifications.SimpleNotification;
+//import com.and.toastmodule.Process.MyThread_1;
+//import com.and.toastmodule.Process.MyThread_2;
 import com.and.toastmodule.Services.BindService;
 import com.and.toastmodule.Services.DownloadService;
 import com.and.toastmodule.Services.NoBindingService;
@@ -741,6 +743,47 @@ public class ToastModule extends ReactContextBaseJavaModule{
             mToast("Dado deletado.");
         }
     }
+
+    @ReactMethod
+    public void processes(String command){
+
+        if (command.equals("thread")) { // Nenhum dos dois modos estão funcionando. Ao rodar o app para.
+
+            // Chamada para o primeiro tipo de thread.
+            MyThread myThread = new MyThread();
+
+            myThread.start();
+
+            // Chamada para o segundo tipo de thread.
+           // MyThread_2 myThread_2 = new MyThread_2(getReactApplicationContext());
+            //new Thread(myThread_2).start();
+        }
+
+    }
+
+    class MyThread extends Thread {
+
+
+        public void run(){
+
+            Toast.makeText(getReactApplicationContext(), "Iniciou thread.", Toast.LENGTH_SHORT).show();
+
+            goToSleep();
+
+            Toast.makeText(getReactApplicationContext(), "Terminou thread.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void goToSleep(){
+        try {
+
+            Thread.sleep(5000);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Método utilizado para facilitar a exibição de toasts.
     public void mToast(String msg){

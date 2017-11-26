@@ -99,7 +99,7 @@ export default class app extends Component {
     var entradas;
 
     if(inputs.length == 0){
-      entradas = <Text> Sem entradas! </Text>
+      entradas = <View/>
     }else {
       entradas = this.inputs(inputs);
     }
@@ -440,6 +440,19 @@ export default class app extends Component {
               text: "Apagar",
               func: () => func.sqlDatabase("delete", this.state.dataBaseId, this.state.dataBaseName, this.state.dataBaseSurname, this.state.dataBaseMarks)                 
             }
+          ]
+          )}
+
+           {this.newBlock(
+          "Processos",
+          [],
+          
+          [
+            {
+              text: "Thread",
+              func: () => func.processes("thread")   
+            },
+            
           ]
           )}
 

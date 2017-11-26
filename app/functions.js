@@ -199,9 +199,16 @@ var ModuleAndroid = NativeModules.ToastModule;
    * Exibe o browser na página do site escolhido.
    */
   module.exports.sqlDatabase = (command, id, name, surname, marks) => {
-    //alert(command);
 
     ModuleAndroid.sqlDatabase(command, id, name, surname, marks);
+  }
+  
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  module.exports.processes = (command) => {
+
+    ModuleAndroid.processes(command);
   }
 
 

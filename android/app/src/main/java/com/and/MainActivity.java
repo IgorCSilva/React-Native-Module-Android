@@ -51,7 +51,6 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle os) {
         super.onCreate(os);
-        setContentView(R.layout.activity_download_view);
         //Toast.makeText(this, "onCreate - MainActivity", Toast.LENGTH_SHORT).show();
 
         mReceiver = new InternoReceiver();

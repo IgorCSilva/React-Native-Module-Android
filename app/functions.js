@@ -13,8 +13,12 @@ import {
   Button,
   TouchableOpacity,
   NativeModules,
-  ScrollView
+  ScrollView,
+  Platform
 } from 'react-native';
+
+import PushNotification from 'react-native-push-notification';
+
 
 // Módulo contendo métodos relacionados a toasts.
 var ModuleAndroid = NativeModules.ToastModule;
@@ -77,6 +81,109 @@ var ModuleAndroid = NativeModules.ToastModule;
 
     ModuleAndroid.sendReactBroadcast(broadcast);
   }
+
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  module.exports.notifica = () => {
+
+    let date = new Date(Date.now() + (5 * 1000));
+    //alert(JSON.stringify(date));
+
+      
+
+      PushNotification.cancelLocalNotifications({id: '123'});
+
+      PushNotification.localNotification({
+        id: '0',
+        ticker: 'My ticker',
+        title: 'My First Notif',
+        message: "My Notification Message", // (required)
+        bigText: 'My big text that will be shown when notification is expanded',
+        subText: 'Module Android RN',
+        color: '#0ff000',
+        vibrate: true,
+        vibration: 200,
+        tag: 'some_tage'
+      });
+  }
+
+  /**
+   * Exibe o browser na página do site escolhido.
+   */
+  module.exports.notificaSch = () => {
+
+    let now = new Date();
+
+    let timeManha = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0, 0);
+    let timeTarde = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 0, 0, 0);
+    let timeNoite = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0, 0);
+
+    let umDia = (24 * 60 * 60 * 1000);
+
+      if(Platform.OS === 'ios'){
+        timeManha = timeManha.toISOString();
+        timeTarde = timeTarde.toISOString();
+        timeNoite = timeNoite.toISOString();
+      }
+
+      //alert((now.getFullYear()));
+      PushNotification.cancelLocalNotifications({id: '0'});
+      PushNotification.cancelLocalNotifications({id: '1'});
+      PushNotification.cancelLocalNotifications({id: '2'});
+      
+      PushNotification.localNotificationSchedule({
+        id: '0',
+        ticker: 'My ticker',
+        title: 'Manhã',
+        message: "Notificação da manhã", // (required)
+        bigText: 'My big text that will be shown when notification is expanded',
+        subText: 'Module Android RN',
+        color: '#0ff000',
+        vibrate: true,
+        vibration: 200,
+        tag: 'some_tage',
+        date: timeManha,  // in 60 secs
+        repeatType: 'time',
+        repeatTime: umDia
+      });
+
+      PushNotification.localNotificationSchedule({
+        id: '1',
+        ticker: 'My ticker',
+        title: 'Tarde',
+        message: "Notificação da tarde", // (required)
+        bigText: 'My big text that will be shown when notification is expanded',
+        subText: 'Module Android RN',
+        color: '#0ff000',
+        vibrate: true,
+        vibration: 200,
+        tag: 'some_tage',
+        date: timeTarde,  // in 60 secs
+        repeatType: 'time',
+        repeatTime: umDia
+      });
+
+      PushNotification.localNotificationSchedule({
+        id: '2',
+        ticker: 'My ticker',
+        title: 'Noite',
+        message: "Notificação da noite", // (required)
+        bigText: 'My big text that will be shown when notification is expanded',
+        subText: 'Module Android RN',
+        color: '#0ff000',
+        vibrate: true,
+        vibration: 200,
+        tag: 'some_tage',
+        date: timeNoite,  // in 60 secs
+        repeatType: 'time',
+        repeatTime: umDia
+      });
+
+      alert('Notificações configuradas!');
+  }
+
+  
   
   /**
    * Exibe o browser na página do site escolhido.

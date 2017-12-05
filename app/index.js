@@ -14,10 +14,16 @@ import {
   TouchableOpacity,
   NativeModules,
   ScrollView,
-  TextInput
+  TextInput,
+  Picker,
+  AppState,
+  Platform
 } from 'react-native';
 
 import func from './functions';
+
+import PushNotification from 'react-native-push-notification';
+import PushController from './notifications';
 
 // Módulo contendo métodos relacionados a toasts.
 var ModuleAndroid = NativeModules.ToastModule;
@@ -27,7 +33,12 @@ export default class app extends Component {
   constructor(props) {
     super(props);
 
+    //this.handleAppStateChange = this.handleAppStateChange.bind(this);
+
+
     this.state = {       
+      seconds: 5,
+
       toastText: '',
       intentText: '',
 
@@ -39,6 +50,35 @@ export default class app extends Component {
       dataBaseMarks: ''      
     };
   }
+
+  componentDidMount(){
+    //AppState.addEventListener('change', this.handleAppStateChange);
+  }
+
+  componentWillUnmount(){
+   // AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+  /*
+  handleAppStateChange(appState){
+
+    if(appState === 'background'){
+
+      let date = new Date(Date.now() + (this.state.seconds * 1000));
+
+      if(Platform.OS === 'ios'){
+        date = date.toISOString();
+      }
+
+      //PushNotification.cancelLocalNotifications({id: '123'});
+
+      PushNotification.localNotificationSchedule({
+        id: '0',
+        title: 'My First Notif',
+        message: "My Notification Message", // (required)
+        date,  // in 60 secs
+      });
+    } 
+  }*/
 
   inputs(inputs){
 
@@ -130,6 +170,8 @@ export default class app extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
+
+          
         {this.newBlock(
           "Toasts ",
           [
@@ -200,6 +242,46 @@ export default class app extends Component {
             },
           ]
           )}
+
+          {this.newBlock(
+          "Notif. RN normal",
+          [          
+          ],
+          
+          [
+            {
+              text: "Notifica",
+              func: () => func.notifica()   
+            },
+          ]
+          )}
+
+          <View>
+            <Text> Escolha o tempo da notificação.</Text>
+            <Picker
+              style={{width: 100}}
+              selectedValue={this.state.seconds}
+              onValueChange={(seconds) => this.setState({ seconds })}
+            >
+              <Picker.Item label="5" value={5} />
+              <Picker.Item label="10" value={10} />
+              <Picker.Item label="15" value={15} />
+            </Picker>
+            <PushController />
+          </View>
+
+          {this.newBlock(
+          "Notif. RN scheduled",
+          [          
+          ],
+          
+          [
+            {
+              text: "Notifica",
+              func: () => func.notificaSch()   
+            },
+          ]
+          )}
           
           {this.newBlock(
           "Notificações",
@@ -240,7 +322,7 @@ export default class app extends Component {
           )}
 
 
-          {/**/}
+          {/*
           {this.newBlock(
           "Callbacks",
           [
@@ -254,7 +336,7 @@ export default class app extends Component {
               func: () => func.callback()   
             },
           ]
-          )}
+          )}*/}
           
           {/**/}
           {this.newBlock(
@@ -443,7 +525,8 @@ export default class app extends Component {
           ]
           )}
 
-           {this.newBlock(
+
+           {/*this.newBlock(
           "Processos",
           [],
           
@@ -454,7 +537,7 @@ export default class app extends Component {
             },
             
           ]
-          )}
+          )*/}
 
         </ScrollView>
       </View>

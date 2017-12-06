@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   NativeModules,
   ScrollView,
-  Platform
+  Platform,
+  ToastAndroid
 } from 'react-native';
 
 import PushNotification from 'react-native-push-notification';
@@ -40,6 +41,14 @@ var ModuleAndroid = NativeModules.ToastModule;
   module.exports.toastPers = (msg) => {
     
     ModuleAndroid.showToastPersonalizado(msg);
+  }
+
+  /**
+   * Exibe um toast simples com a mensagem enviada.
+   * @param {*mensagem} msg
+   */
+  module.exports.toastRNSimples = () => {
+    ToastAndroid.showWithGravity('All Your Base Are Belong To Us', ToastAndroid.SHORT, ToastAndroid.CENTER);
   }
 
   /**

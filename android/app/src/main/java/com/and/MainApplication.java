@@ -4,6 +4,8 @@ import android.app.Application;
 import android.widget.Toast;
 
 import com.facebook.react.ReactApplication;
+import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,6 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundTaskPackage(),
+            new BackgroundTimerPackage(),
           new ToastPackage(),
           new  ReactNativePushNotificationPackage()
 
@@ -43,6 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
       super.onCreate();
+
+      BackgroundTaskPackage.useContext(this);
 
       SoLoader.init(this, /* native exopackage */ false);
 

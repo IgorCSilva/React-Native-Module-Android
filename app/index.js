@@ -17,7 +17,8 @@ import {
   TextInput,
   Picker,
   AppState,
-  Platform
+  Platform, 
+  ToastAndroid
 } from 'react-native';
 
 import func from './functions';
@@ -25,8 +26,12 @@ import func from './functions';
 import PushNotification from 'react-native-push-notification';
 import PushController from './notifications';
 
+import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTas from 'react-native-background-task';
+
 // Módulo contendo métodos relacionados a toasts.
 var ModuleAndroid = NativeModules.ToastModule;
+
 
 export default class app extends Component {
 
@@ -57,6 +62,7 @@ export default class app extends Component {
 
   componentWillUnmount(){
    // AppState.removeEventListener('change', this.handleAppStateChange);
+  
   }
   /*
   handleAppStateChange(appState){
@@ -166,6 +172,8 @@ export default class app extends Component {
 
   render() {
 
+    
+
     var that = this;
     return (
       <View style={styles.container}>
@@ -191,6 +199,20 @@ export default class app extends Component {
             {
               text: "Toast Personalizado",
               func: () => func.toastPers(this.state.toastText)   
+            },
+            
+          ]
+          )}
+
+           {this.newBlock(
+          "Toasts RN",
+          [     
+          ],
+
+          [
+            {
+              text: "Toast Simples",
+              func: () => func.toastRNSimples()   
             },
             
           ]

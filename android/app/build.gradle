@@ -143,7 +143,7 @@ android {
 }
 
 dependencies {
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha9"
+    compile "android.arch.persistence.room:compiler:1.0.0-alpha9"
     compile "android.arch.lifecycle:extensions:1.0.0"
     compile project(':react-native-background-timer')
     compile project(':react-native-background-task')

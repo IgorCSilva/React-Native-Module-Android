@@ -1,9 +1,9 @@
 
 ## JUnit
 
-        Utilizando o JUnit para testes isoladamente, configurei o arquivo gradle e criei a pasta de testes 'test'.  
-    Nela criei três arquivos, um sendo a suíte de testes e os outros dois sendo os testes. Na suíte de testes  
-    implementei basicamente o código a seguir:
+    Utilizando o JUnit para testes isoladamente, configurei o arquivo gradle e criei a pasta de testes  
+    'test'. Nela criei três arquivos, um sendo a suíte de testes e os outros dois sendo os testes.  
+    Na suíte de testes implementei basicamente o código a seguir:
     
 @RunWith(Suite.class)  
 @Suite.SuiteClasses({  
@@ -54,9 +54,9 @@ public ActivityTestRule<DownloadViewActivity>
     imageActivityTestRule = new ActivityTestRule<DownloadViewActivity>(DownloadViewActivity.class, true, false);
     
 
-	  A activity escolhida foi a DownloadViewActivity.class, que contém uma imagem com id imagemDownload.  
-	  O último parâmetro do construtor indica se a activity deve estar visível ou não. Colocando true  
-	  habilitei para que a activity ficasse visível. Após isso implementei o teste a seguir:
+    A activity escolhida foi a DownloadViewActivity.class, que contém uma imagem com id imagemDownload.  
+    O último parâmetro do construtor indica se a activity deve estar visível ou não. Colocando true  
+    habilitei para que a activity ficasse visível. Após isso implementei o teste a seguir:
     
 @Test  
 public void viewImageLaunched(){  

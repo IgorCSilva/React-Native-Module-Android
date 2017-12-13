@@ -31,6 +31,8 @@ import android.widget.Toast;
 
 import com.and.MainActivity;
 import com.and.toastmodule.DataBase.DataBaseHelper;
+import com.and.toastmodule.DataBase.Entity.Pessoa;
+import com.and.toastmodule.DataBase.RNDatabase;
 import com.and.toastmodule.Intents.IntentCall;
 import com.and.toastmodule.Intents.IntentView;
 import com.and.toastmodule.Notifications.SimpleNotification;
@@ -192,6 +194,8 @@ public class ToastModule extends ReactContextBaseJavaModule{
 
         notification.createNotification(getReactApplicationContext());
         notification.showNotification();
+
+        mToast("Notificação " + notification.title + ": " + notification.text);
     }
 
     @ReactMethod
@@ -278,18 +282,20 @@ public class ToastModule extends ReactContextBaseJavaModule{
         NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
 
 
+        String[] texts = new String[]{"Criando", "lista", "de", "frases", "para", "notificação", "inbox!"};
         // Adicionando as linhas.
         int i;
-        /*
+
         for(i = 0; i < texts.length; i++){
             style.addLine(texts[i]);
-        }*/
+        }
 
+        /*
         style.addLine("Linha 1");
         style.addLine("Linha 2");
         style.addLine("Linha 3");
         style.addLine("Linha 4");
-
+        */
         // Adicionando título.
         style.setBigContentTitle(title);
 
@@ -712,25 +718,44 @@ public class ToastModule extends ReactContextBaseJavaModule{
     public void sqlDatabase(String command, String id, String name, String surname, String marks){
         DataBaseHelper myDb = new DataBaseHelper(getReactApplicationContext());
 
+        RNDatabase db = null;
+        Pessoa pessoa = new Pessoa();
+        pessoa.setName(name);
+        pessoa.setSurname(surname);
+        pessoa.setMarks(marks);
+
         if(command.equals("insert")){
-            boolean insert = myDb.insertData(name, surname, marks);
+
+
+            db.pessoaDao().insertAll(pessoa);
+
+            /*boolean insert = myDb.insertData(name, surname, marks);
 
             if (insert) {
                 mToast("Inserido com sucesso!");
             }else {
                 mToast("Problema ao inserir...");
-            }
+            }*/
 
         }else if(command.equals("read")){
             Cursor res = myDb.getAllData();
 
+            StringBuilder dataBaseInfo = new StringBuilder();
+
+            while(res.moveToNext()){
+                dataBaseInfo.append(res.getString(0));
+                dataBaseInfo.append(": ");
+                dataBaseInfo.append(res.getString(1));
+                dataBaseInfo.append("\n");
+            }
+            /*
             String dataBaseInfo = "";
 
             while(res.moveToNext()){
                 dataBaseInfo = dataBaseInfo + res.getString(0) + ": " + res.getString(1) + "\n";
-            }
+            }*/
 
-            mToast(dataBaseInfo);
+            mToast(dataBaseInfo.toString());
         }else if(command.equals("update")){
 
             myDb.updateData(id, name, surname, marks);
@@ -738,9 +763,12 @@ public class ToastModule extends ReactContextBaseJavaModule{
             mToast("Dado atualizado.");
         }else if(command.equals("delete")){
 
-            myDb.deleteData(id);
+            db.pessoaDao().delete(pessoa);
+
+            /*myDb.deleteData(id);
 
             mToast("Dado deletado.");
+            */
         }
     }
 

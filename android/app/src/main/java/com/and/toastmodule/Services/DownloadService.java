@@ -38,29 +38,31 @@ public class DownloadService extends IntentService {
 
             if(output.exists()){
                 output.delete();
-            }
+            }else {
 
-            URL url = new URL(intent.getData().toString());
-            HttpURLConnection c = (HttpURLConnection) url.openConnection();
-            FileOutputStream fos = new FileOutputStream(output.getPath());
-            BufferedOutputStream out = new BufferedOutputStream(fos);
+                URL url = new URL(intent.getData().toString());
+                HttpURLConnection c = (HttpURLConnection) url.openConnection();
+                FileOutputStream fos = new FileOutputStream(output.getPath());
+                BufferedOutputStream out = new BufferedOutputStream(fos);
 
-            try {
-                //Toast.makeText(getApplicationContext(), "Baixando...", Toast.LENGTH_SHORT).show();
+                try {
+                    //Toast.makeText(getApplicationContext(), "Baixando...", Toast.LENGTH_SHORT).show();
 
-                InputStream in = c.getInputStream();
-                byte[] buffer = new byte[8192];
-                int len = 0;
-                while ((len = in.read(buffer)) >= 0) {
-                    out.write(buffer, 0, len);
+                    InputStream in = c.getInputStream();
+                    byte[] buffer = new byte[8192];
+                    int len = 0;
+                    while ((len = in.read(buffer)) >= 0) {
+                        out.write(buffer, 0, len);
+                    }
+                    out.flush();
                 }
-                out.flush();
+                finally {
+                    fos.getFD().sync();
+                    out.close();
+                    c.disconnect();
+                }
             }
-            finally {
-                fos.getFD().sync();
-                out.close();
-                c.disconnect();
-            }
+
 
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(DOWNLOAD_COMPLETE).putExtra("link", intent.getData().toString()));
 

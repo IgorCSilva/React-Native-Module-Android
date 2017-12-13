@@ -17,9 +17,9 @@ public class SimpleNotification {
 
     private Uri sound;
     private long[] vibratePattern;
-    private int id;
-    private String title;
-    private String text;
+    public int id;
+    public String title;
+    public  String text;
 
     NotificationCompat.Builder mBuilder;
     NotificationManager mNotifyManager;
@@ -36,6 +36,12 @@ public class SimpleNotification {
 
     public int getId(){
         return this.id;
+    }
+    public String getTitle(){
+        return this.title;
+    }
+    public String getText(){
+        return this.text;
     }
 
     public long[] getVibrate(){

@@ -77,7 +77,7 @@ export default class app extends Component {
           onPress={data.func}
           
         >
-          <Text style={{color: 'white', fontSize: 20}}> {data.text} </Text>
+          <Text style={{color: 'white', fontSize: 20}}> {data.text} </Text> 
 
         </TouchableOpacity>
 

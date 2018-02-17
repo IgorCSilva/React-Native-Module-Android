@@ -1,0 +1,24 @@
+#Internal package file, do not edit.
+#Sun Nov 26 00:10:19 GFT 2017
+2.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\res\\resources-debug-androidTest.ap_
+5.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar\\LICENSE-junit.txt
+5.set=JAVA_RESOURCE
+3.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar
+6.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\dex\\androidTest\\debug\\folders\\1000\\1f\\main\\classes.dex
+2.set=ANDROID_RESOURCE
+4.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar
+count=7
+0.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\folders\\2\\1f\\main\\META-INF\\services\\org.xmlpull.v1.XmlPullParserFactory
+5.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar
+4.set=JAVA_RESOURCE
+6.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\dex\\androidTest\\debug\\folders\\1000\\1f\\main
+1.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\res\\resources-debug-androidTest.ap_\\resources.arsc
+1.set=ANDROID_RESOURCE
+2.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\res\\resources-debug-androidTest.ap_\\AndroidManifest.xml
+6.set=DEX
+0.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\folders\\2\\1f\\main
+3.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar\\junit\\runner\\smalllogo.gif
+3.set=JAVA_RESOURCE
+1.base=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\res\\resources-debug-androidTest.ap_
+4.file=C\:\\Users\\Igor\\Documents\\Codigar\\React_Native\\Projetos\\React-Native-Module-Android\\android\\app\\build\\intermediates\\transforms\\mergeJavaRes\\androidTest\\debug\\jars\\2\\1f\\main.jar\\junit\\runner\\logo.gif
+0.set=JAVA_RESOURCE
